@@ -69,7 +69,7 @@ namespace DiscGolfClubPoints
             IList<IList<Object>> values = response.Values;
             if (values != null && values.Count > 0)
             {
-                Console.WriteLine("Name, Major");
+                Console.WriteLine("Name, Points");
                 foreach(var row in values)
                 {
                     Console.WriteLine("{0}, {1}", row[0], row[1]);
