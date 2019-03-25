@@ -21,15 +21,16 @@ namespace DiscGolfClubPoints
     {
         static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         static string ApplicationName = "Disc Golf Club Points";
+        static string spreadSheetId = "1a68GxhJQDjvzBhBOLpJbch3Jj33bZlYE9FfHrboFB_E";
         static SheetsService service;
         static Dictionary<string, int> origNames;
         static Dictionary<string, int> updatedNames;
-        static Boolean updated;
+        static Boolean needsUpdate;
 
         public Form1()
         {
             InitializeComponent();
-            updated = true;
+            needsUpdate = false;
             origNames = new Dictionary<string, int>();
             updatedNames = new Dictionary<string, int>();
             connectToSheets();
@@ -61,7 +62,6 @@ namespace DiscGolfClubPoints
 
         private void fillNameCombo()
         {
-            string spreadSheetId = "1a68GxhJQDjvzBhBOLpJbch3Jj33bZlYE9FfHrboFB_E";
             //TODO eventually change this from hard coded to a find method on the first row
             string range = "Sheet1!A2:B";
             string curName;
@@ -102,7 +102,7 @@ namespace DiscGolfClubPoints
 
         private void enterButton_Click(object sender, EventArgs e)
         {
-            updated = false;
+            needsUpdate = true;
             string enteredName = nameCombo.Text;
             if (enteredName.Length < 0)
             {
@@ -124,7 +124,10 @@ namespace DiscGolfClubPoints
 
         private void updateSheets()
         {
-            
+            if (needsUpdate)
+            {
+
+            }
         }
     }
 }
