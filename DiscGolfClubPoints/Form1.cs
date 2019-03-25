@@ -23,11 +23,15 @@ namespace DiscGolfClubPoints
         static string ApplicationName = "Disc Golf Club Points";
         static SheetsService service;
         static Dictionary<string, int> origNames;
+        static Dictionary<string, int> updatedNames;
+        static Boolean updated;
 
         public Form1()
         {
             InitializeComponent();
+            updated = true;
             origNames = new Dictionary<string, int>();
+            updatedNames = new Dictionary<string, int>();
             connectToSheets();
             fillNameCombo();
         }
@@ -58,6 +62,7 @@ namespace DiscGolfClubPoints
         private void fillNameCombo()
         {
             string spreadSheetId = "1a68GxhJQDjvzBhBOLpJbch3Jj33bZlYE9FfHrboFB_E";
+            //TODO eventually change this from hard coded to a find method on the first row
             string range = "Sheet1!A2:B";
             string curName;
             int curPoints;
@@ -74,13 +79,20 @@ namespace DiscGolfClubPoints
                     {
                         curName = row[0].ToString();
                         curPoints = int.Parse(row[1].ToString());
-                        origNames.Add(curName, curPoints);
+                        if (!origNames.Keys.Contains(curName))
+                        {
+                            origNames.Add(curName, curPoints);
+                        } else
+                        {
+                            origNames[curName] += curPoints;
+                        }
                         nameCombo.Items.Add(curName);
                     } catch
                     {
                         //TODO error message something wasnt formated correctly.
                     }
                 }
+                updatedNames = origNames;
             }
             else
             {
@@ -90,16 +102,27 @@ namespace DiscGolfClubPoints
 
         private void enterButton_Click(object sender, EventArgs e)
         {
-            if (nameCombo.Text.Length < 0)
+            updated = false;
+            string enteredName = nameCombo.Text;
+            if (enteredName.Length < 0)
             {
                 //TODO error message and change to = instead of <
                 return;
+            } else if (updatedNames.Keys.Contains(enteredName))
+            {
+                updatedNames[enteredName] += 1;
+            } else
+            {
+                updatedNames.Add(enteredName, 1);
             }
-
-            addName("Ian");
         }
 
-        private void addName(string name)
+        private void updateButton_Click(object sender, EventArgs e)
+        {
+            updateSheets();
+        }
+
+        private void updateSheets()
         {
             
         }

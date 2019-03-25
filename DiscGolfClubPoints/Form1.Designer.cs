@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.enterButton = new System.Windows.Forms.Button();
             this.nameCombo = new System.Windows.Forms.ComboBox();
+            this.updateButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -60,11 +61,22 @@
             this.nameCombo.Size = new System.Drawing.Size(330, 21);
             this.nameCombo.TabIndex = 3;
             // 
+            // updateButton
+            // 
+            this.updateButton.Location = new System.Drawing.Point(450, 12);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(75, 23);
+            this.updateButton.TabIndex = 4;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 124);
+            this.Controls.Add(this.updateButton);
             this.Controls.Add(this.nameCombo);
             this.Controls.Add(this.enterButton);
             this.Controls.Add(this.label1);
@@ -79,6 +91,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button enterButton;
         private System.Windows.Forms.ComboBox nameCombo;
+        private System.Windows.Forms.Button updateButton;
     }
 }
 
