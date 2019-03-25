@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.enterButton = new System.Windows.Forms.Button();
+            this.nameCombo = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
-            // 
-            // nameBox
-            // 
-            this.nameBox.Location = new System.Drawing.Point(61, 61);
-            this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(330, 20);
-            this.nameBox.TabIndex = 0;
             // 
             // label1
             // 
@@ -59,14 +52,22 @@
             this.enterButton.UseVisualStyleBackColor = true;
             this.enterButton.Click += new System.EventHandler(this.enterButton_Click);
             // 
+            // nameCombo
+            // 
+            this.nameCombo.FormattingEnabled = true;
+            this.nameCombo.Location = new System.Drawing.Point(61, 59);
+            this.nameCombo.Name = "nameCombo";
+            this.nameCombo.Size = new System.Drawing.Size(330, 21);
+            this.nameCombo.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 124);
+            this.Controls.Add(this.nameCombo);
             this.Controls.Add(this.enterButton);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.nameBox);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -75,10 +76,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button enterButton;
+        private System.Windows.Forms.ComboBox nameCombo;
     }
 }
 

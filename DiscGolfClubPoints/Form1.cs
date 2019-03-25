@@ -21,24 +21,18 @@ namespace DiscGolfClubPoints
     {
         static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         static string ApplicationName = "Disc Golf Club Points";
+        static SheetsService service;
+        static Dictionary<string, int> origNames;
 
         public Form1()
         {
             InitializeComponent();
+            origNames = new Dictionary<string, int>();
+            connectToSheets();
+            fillNameCombo();
         }
 
-        private void enterButton_Click(object sender, EventArgs e)
-        {
-            if (nameBox.Text.Length < 0)
-            {
-                //TODO error message
-                return;
-            }
-
-            addName("Ian");
-        }
-
-        private void addName(string name)
+        private void connectToSheets()
         {
             UserCredential credential;
 
@@ -54,14 +48,19 @@ namespace DiscGolfClubPoints
                 Console.WriteLine("Credential file saved to: " + credPath);
             }
 
-            var service = new SheetsService(new BaseClientService.Initializer()
+            service = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
             });
+        }
 
+        private void fillNameCombo()
+        {
             string spreadSheetId = "1a68GxhJQDjvzBhBOLpJbch3Jj33bZlYE9FfHrboFB_E";
             string range = "Sheet1!A2:B";
+            string curName;
+            int curPoints;
             SpreadsheetsResource.ValuesResource.GetRequest request =
                 service.Spreadsheets.Values.Get(spreadSheetId, range);
 
@@ -69,17 +68,40 @@ namespace DiscGolfClubPoints
             IList<IList<Object>> values = response.Values;
             if (values != null && values.Count > 0)
             {
-                Console.WriteLine("Name, Points");
-                foreach(var row in values)
+                foreach (var row in values)
                 {
-                    Console.WriteLine("{0}, {1}", row[0], row[1]);
+                    try
+                    {
+                        curName = row[0].ToString();
+                        curPoints = int.Parse(row[1].ToString());
+                        origNames.Add(curName, curPoints);
+                        nameCombo.Items.Add(curName);
+                    } catch
+                    {
+                        //TODO error message something wasnt formated correctly.
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("No data found.");
+                //TODO error message no data found
             }
-            Console.Read();
+        }
+
+        private void enterButton_Click(object sender, EventArgs e)
+        {
+            if (nameCombo.Text.Length < 0)
+            {
+                //TODO error message and change to = instead of <
+                return;
+            }
+
+            addName("Ian");
+        }
+
+        private void addName(string name)
+        {
+            
         }
     }
 }
