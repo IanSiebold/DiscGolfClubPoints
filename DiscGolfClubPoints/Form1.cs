@@ -19,7 +19,7 @@ namespace DiscGolfClubPoints
 {
     public partial class Form1 : Form
     {
-        static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+        static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "Disc Golf Club Points";
         static string spreadSheetId = "1a68GxhJQDjvzBhBOLpJbch3Jj33bZlYE9FfHrboFB_E";
         static SheetsService service;
@@ -104,7 +104,7 @@ namespace DiscGolfClubPoints
         {
             needsUpdate = true;
             string enteredName = nameCombo.Text;
-            if (enteredName.Length < 0)
+            if (enteredName.Length == 0)
             {
                 //TODO error message and change to = instead of <
                 return;
@@ -124,9 +124,66 @@ namespace DiscGolfClubPoints
 
         private void updateSheets()
         {
+            toggleAllButtons();
             if (needsUpdate)
             {
+                string range1 = "Sheet1!A2:A";
+                string range2 = "Sheet1!B2:B";
 
+                clearColumn(range1);
+                clearColumn(range2);
+
+                ValueRange valueRange = new ValueRange();
+                valueRange.MajorDimension = "COLUMNS";
+
+                var oblist = updatedNames.Keys.Cast<object>().ToList();
+                valueRange.Values = new List<IList<object>> { oblist };
+
+                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadSheetId, range1);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                update.Execute();
+
+                oblist = updatedNames.Values.Cast<object>().ToList();
+                valueRange.Values = new List<IList<object>> { oblist };
+
+                update = service.Spreadsheets.Values.Update(valueRange, spreadSheetId, range2);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                update.Execute();
+            }
+            toggleAllButtons();
+        }
+
+        private void clearColumn(string range)
+        {
+            ClearValuesRequest clearRequest = new ClearValuesRequest();
+            SpreadsheetsResource.ValuesResource.ClearRequest req = service.Spreadsheets.Values.Clear(clearRequest, spreadSheetId, range);
+            req.Execute();
+        }
+
+        private void toggleAllButtons()
+        {
+            if (enterButton.Enabled)
+            {
+                enterButton.Enabled = false;
+            } else
+            {
+                enterButton.Enabled = true;
+            }
+
+            if (updateButton.Enabled)
+            {
+                updateButton.Enabled = false;
+            } else
+            {
+                updateButton.Enabled = true;
+            }
+
+            if (nameCombo.Enabled)
+            {
+                nameCombo.Enabled = false;
+            } else
+            {
+                nameCombo.Enabled = true;
             }
         }
     }
