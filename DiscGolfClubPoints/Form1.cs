@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 
 namespace DiscGolfClubPoints
 {
@@ -82,12 +83,14 @@ namespace DiscGolfClubPoints
                         if (!origNames.Keys.Contains(curName))
                         {
                             origNames.Add(curName, curPoints);
-                        } else
+                        }
+                        else
                         {
                             origNames[curName] += curPoints;
                         }
                         nameCombo.Items.Add(curName);
-                    } catch
+                    }
+                    catch
                     {
                         //TODO error message something wasnt formated correctly.
                     }
@@ -102,19 +105,43 @@ namespace DiscGolfClubPoints
 
         private void enterButton_Click(object sender, EventArgs e)
         {
+            Stopwatch sw = new Stopwatch();
+
             needsUpdate = true;
             string enteredName = nameCombo.Text;
             if (enteredName.Length == 0)
             {
-                //TODO error message and change to = instead of <
                 return;
-            } else if (updatedNames.Keys.Contains(enteredName))
+            }
+            else if (updatedNames.Keys.Contains(enteredName))
             {
                 updatedNames[enteredName] += 1;
-            } else
+            }
+            else
             {
                 updatedNames.Add(enteredName, 1);
+                nameCombo.Items.Add(enteredName);
             }
+            nameCombo.Text = nameCombo.Text + " has been logged.";
+            toggleAllButtons();
+            sw.Start();
+            for (int i = 0; ; i++)
+            {
+                if (i % 10000 == 0)
+                {
+                    sw.Stop();
+                    if (sw.ElapsedMilliseconds > 3000)
+                    {
+                        break;
+                    } else
+                    {
+                        sw.Start();
+                    }
+                }
+            }
+            nameCombo.Text = "";
+            toggleAllButtons();
+            
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -165,7 +192,8 @@ namespace DiscGolfClubPoints
             if (enterButton.Enabled)
             {
                 enterButton.Enabled = false;
-            } else
+            }
+            else
             {
                 enterButton.Enabled = true;
             }
@@ -173,7 +201,8 @@ namespace DiscGolfClubPoints
             if (updateButton.Enabled)
             {
                 updateButton.Enabled = false;
-            } else
+            }
+            else
             {
                 updateButton.Enabled = true;
             }
@@ -181,9 +210,18 @@ namespace DiscGolfClubPoints
             if (nameCombo.Enabled)
             {
                 nameCombo.Enabled = false;
-            } else
+            }
+            else
             {
                 nameCombo.Enabled = true;
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (needsUpdate)
+            {
+                //TODO message saying you didn't save. Ask them to save
             }
         }
     }

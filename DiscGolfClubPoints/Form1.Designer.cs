@@ -39,9 +39,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(58, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 13);
+            this.label1.Size = new System.Drawing.Size(143, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Enter your name";
+            this.label1.Text = "Enter your first and last name";
             // 
             // enterButton
             // 
@@ -81,7 +81,7 @@
             this.Controls.Add(this.enterButton);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Disc Golf Club";
             this.ResumeLayout(false);
             this.PerformLayout();
 
